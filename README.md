@@ -5,8 +5,10 @@ The dataset included multiple geometric and tolerance-based parameters used for 
 The model was trained and optimized to improve classification accuracy and reduce false detections.
 Performance was evaluated using metrics such as accuracy, precision, recall, and confusion matrix analysis.
 This project provided practical exposure to industrial machine learning workflows and predictive analytics.
-References:
+
+## References:
 1. Chen, T. & Guestrin, C. (2016). XGBoost: A Scalable Tree Boosting System.
 2. Breiman, L. (2001). Random Forests.
-Tools:
+   
+## Tools:
 VSCode, Python, XGBoost, Scikit-learn, Pandas, NumPy, Matplotlib, Claude Sonnet 4.6 
