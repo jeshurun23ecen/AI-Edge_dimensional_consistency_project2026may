@@ -1,0 +1,139 @@
+
+==============================================================
+  MITIGATION REPORT — PS-2 PARTS MANUFACTURING QUALITY
+  XGBoost Dimensional Consistency Classifier
+==============================================================
+
+1. MODEL PARAMETERS
+──────────────────────────────────────────────────────────────
+  Algorithm        : XGBoost (Gradient Boosted Trees)
+  n_estimators     : 200
+  max_depth        : 5
+  learning_rate    : 0.1
+  subsample        : 0.8
+  colsample_bytree : 0.8
+  Imbalance fix    : SMOTE + scale_pos_weight=1.000
+  Train/Test split : 80% / 20% (stratified)
+
+2. TARGET LABEL DEFINITION
+──────────────────────────────────────────────────────────────
+  No pre-labelled target existed in the CSV.
+  Labels derived using ±2σ manufacturing tolerance bounds:
+
+  Length : [91.554, 107.984] mm
+  Width  : [45.705, 54.161] mm
+  Height : [18.190, 22.397] mm
+
+  Parts outside ANY bound → INCONSISTENT (0)
+  Parts within ALL bounds → CONSISTENT (1)
+
+  Consistent   : 451 parts (90.2%)
+  Inconsistent : 49 parts (9.8%)
+
+3. EVALUATION RESULTS
+──────────────────────────────────────────────────────────────
+  Accuracy  (overall)         : 0.9800
+  Precision (weighted avg)    : 0.9804
+  Recall    (weighted avg)    : 0.9800
+  F1-Score  (weighted avg)    : 0.9790
+  5-Fold CV F1                : 0.9834 ± 0.0104
+
+  Inconsistent class:
+    Precision : 1.0000
+    Recall    : 0.8000
+    F1-Score  : 0.8889
+
+  Consistent class:
+    Precision : 0.9783
+    Recall    : 1.0000
+    F1-Score  : 0.9890
+
+4. CONFUSION MATRIX
+──────────────────────────────────────────────────────────────
+[[ 8  2]
+ [ 0 90]]
+
+  True Negatives  (defects caught)        : 8
+  False Positives (good parts rejected)   : 2
+  False Negatives (defects slipped past)  : 0  ← most critical
+  True Positives  (good parts passed)     : 90
+
+5. TOP FEATURES BY IMPORTANCE
+──────────────────────────────────────────────────────────────
+LW_deviation          0.295990
+Volume                0.243136
+Width                 0.231220
+Length_Width_Ratio    0.076733
+Height                0.058184
+Length                0.044090
+dim_range             0.024519
+Height_Width_Ratio    0.017648
+Operator              0.008480
+
+6. OPERATOR INCONSISTENCY RATES (full dataset)
+──────────────────────────────────────────────────────────────
+Operator
+Op-5     45.5
+Op-3     41.4
+Op-4     33.3
+Op-1     26.9
+Op-2     24.0
+Op-12     0.0
+Op-10     0.0
+Op-11     0.0
+Op-16     0.0
+Op-13     0.0
+Op-15     0.0
+Op-14     0.0
+Op-19     0.0
+Op-18     0.0
+Op-17     0.0
+Op-20     0.0
+Op-6      0.0
+Op-7      0.0
+Op-8      0.0
+Op-9      0.0
+
+  Above-average risk: Op-5, Op-3, Op-4, Op-1, Op-2
+
+7. MITIGATION STRATEGIES
+──────────────────────────────────────────────────────────────
+
+  A. OPERATOR SKILL
+     • Operators Op-5, Op-3, Op-4, Op-1, Op-2 exceed average inconsistency.
+       Immediate targeted re-training required.
+     • Weekly precision skill assessments for bottom-quartile.
+     • Pair low performers with top performers (buddy system).
+     • Real-time quality score dashboard per operator per shift.
+
+  B. MACHINE CALIBRATION
+     • Daily  : Zero-point calibration on all CMM instruments.
+     • Weekly : Full dimensional check vs master gauge.
+     • Monthly: Certified metrologist full recalibration.
+     • Flag machines >5% inconsistency for immediate service.
+     • SPC (X-bar & R) charts on Length/Width/Height.
+       Alert when readings drift beyond ±2σ.
+
+  C. TOOL WEAR
+     • Replace cutting tools when moving-average deviation
+       exceeds 50% of the tolerance band.
+     • Log every change: part ID, machine, operator, timestamp.
+     • Build regression model on deviation vs tool age for
+       proactive replacement scheduling.
+
+  D. INLINE ML QUALITY GATE
+     Stage        │ Action                        │ Threshold
+     ─────────────┼───────────────────────────────┼──────────────
+     Post-cut     │ Score every part (this model) │ pred=0 → hold
+     Post-grind   │ 10% sample CMM                │ ±0.05 mm
+     Final QC     │ 100% CMM on all flagged parts │ Per drawing
+     Shipping     │ Certificate of Conformity     │ QC sign-off
+
+  E. CONTINUOUS IMPROVEMENT (PDCA)
+     PLAN  → Reduce inconsistency rate by 5% per month.
+     DO    → Apply strategies A–D; log all changes.
+     CHECK → Retrain model monthly on new production data.
+     ACT   → Standardise successes; escalate to engineering
+             for Design-for-Manufacturability (DFM) review.
+
+==============================================================

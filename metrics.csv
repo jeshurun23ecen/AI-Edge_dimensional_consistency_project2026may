@@ -1,0 +1,13 @@
+Metric,Value
+Accuracy,0.98
+Precision (weighted),0.9804347826086957
+Recall (weighted),0.98
+F1 (weighted),0.9789987789987791
+Precision - Inconsistent,1.0
+Recall - Inconsistent,0.8
+F1 - Inconsistent,0.8888888888888888
+Precision - Consistent,0.9782608695652174
+Recall - Consistent,1.0
+F1 - Consistent,0.989010989010989
+CV F1 Mean,0.9833684339045412
+CV F1 Std,0.010396148350890588
